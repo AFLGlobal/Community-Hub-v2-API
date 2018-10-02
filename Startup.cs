@@ -44,11 +44,25 @@ namespace Community_Hub_v2_API
                     };
                 });
 
+            
+
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AllowUpdate", policy => policy.RequireClaim("AllowUpdate", "true"));
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+               .Build());
             });
         }
 
@@ -66,6 +80,7 @@ namespace Community_Hub_v2_API
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
+            app.UseCors();
             app.UseMvc();
         }
     }
